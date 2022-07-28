@@ -1,15 +1,24 @@
-import { Entity, PointGraphics } from "resium"
+import { PointPrimitive, PointPrimitiveCollection } from "resium"
 import { Cartesian3} from "cesium"
 import { observer } from "mobx-react-lite"
 import entityStore from "../../../store/entityStore"
 
-const Points  = observer(() => entityStore.points.map(coords => {
+
+
+const Point = observer(({coords, index}) => {
   const position = Cartesian3.fromDegrees(...coords)
-  return (
-    <Entity position={position} onMouseMove={e => console.log(e)}>
-      <PointGraphics pixelSize={10}/>
-    </Entity>
-  )}
+  const onClick = (e) => {
+    console.log('e::', e)
+    entityStore.setCurrentIndex(index)
+  }
+
+  return <PointPrimitive  position={position} onClick={onClick} />
+})
+
+const Points  = observer(() => (
+  <PointPrimitiveCollection>
+    { entityStore.points.map((coords, i) => <Point coords={coords} index={i}/>)}
+  </PointPrimitiveCollection> 
 ))
 
 

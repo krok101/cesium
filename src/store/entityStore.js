@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx"
 
 class EntityStore {
+  currentIndex = -1;
   points = []
 
   constructor () {
@@ -13,6 +14,10 @@ class EntityStore {
 
   removePoints() {
     this.points = []
+  }
+
+  setCurrentIndex(index) {
+    this.currentIndex = index
   }
 }
 
