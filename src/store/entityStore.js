@@ -1,14 +1,18 @@
 import { makeAutoObservable } from "mobx"
 
 class EntityStore {
-  point = [-122.4175, 37.655, 400]
+  points = []
 
   constructor () {
     makeAutoObservable(this)
   }
 
-  setPoint(point) {
-    this.point = point
+  addPoint(point) {
+    this.points.push(point)
+  }
+
+  removePoints() {
+    this.points = []
   }
 }
 

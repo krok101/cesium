@@ -26,9 +26,9 @@ const EditorPoint = observer(() => {
   return (
     <div className={styles.container}>
       <h1>edit point </h1>
-      <input value={entityStore.point[0]} onChange={(e) => onChangeCoord(e, 0)}/>
+{/*       <input value={entityStore.point[0]} onChange={(e) => onChangeCoord(e, 0)}/>
       <input value={entityStore.point[1]} onChange={(e) => onChangeCoord(e, 1)}/>
-      <input value={entityStore.point[2]} onChange={(e) => onChangeCoord(e, 2)}/>
+      <input value={entityStore.point[2]} onChange={(e) => onChangeCoord(e, 2)}/> */}
     </div>
   )
 })

@@ -1,26 +1,55 @@
-import { Viewer, Entity, PointGraphics, EntityDescription } from "resium"
-import { Cartesian3, createWorldTerrain } from "cesium"
+import { Viewer } from "resium"
+import { createWorldTerrain} from "cesium"
 import styles from './styles.module.css'
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import entityStore from "../../store/entityStore"
+import { radiansToDegrees, getLocationFromScreenXY } from './helpers'
+import Points from './points/Points'
+import Lines from './lines/Lines'
+import Poligon from './poligon/Poligon'
 
 const terrainProvider = createWorldTerrain()
 
 const Map = observer(() => {
-  const position = Cartesian3.fromDegrees(...entityStore.point )
+  const cesium = useRef()
+  let isNPress = false
 
-  const entityRef = useRef()
-  const onClickEntity = (e) => {
-    entityStore.setPoint(entityRef.current.cesiumElement.position._value)
+  const addPoint = (e) => {
+    let [x, y] = getLocationFromScreenXY(e.position.x, e.position.y, cesium)
+    x = radiansToDegrees(x)
+    y = radiansToDegrees(y)
+    entityStore.addPoint([y, x, 400])
   }
+
+  const onClickViewer = (e) => {
+    if (isNPress) {
+      addPoint(e)
+    }
+  }
+
+  const keyDown = (e) => {
+    if (e.keyCode === 78) isNPress = true
+  }
+
+  const keyUp = (e) => {
+    if (e.keyCode === 78) isNPress = false
+  } 
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyDown)
+    document.addEventListener('keyup', keyUp)
+    return () =>{
+      document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('keyup', keyUp)
+    }
+  })
+
   return (
-    <Viewer full terrainProvider={terrainProvider} className={styles.container}>
-      <Entity position={position} name="Tokyo" onClick={(e) => onClickEntity(e)} ref={entityRef}>
-        <PointGraphics pixelSize={10}/>
-        <EntityDescription>
-        </EntityDescription>
-      </Entity>
+    <Viewer ref={cesium} full terrainProvider={terrainProvider} className={styles.container}  onClick={onClickViewer}>
+      <Points/>
+      <Lines/>
+      <Poligon/>
     </Viewer>
   )
 })
