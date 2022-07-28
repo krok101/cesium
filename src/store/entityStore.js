@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx"
 class EntityStore {
   currentIndex = -1;
   points = []
+  isActivePoint = false;
 
   constructor () {
     makeAutoObservable(this)
@@ -18,6 +19,10 @@ class EntityStore {
 
   setCurrentIndex(index) {
     this.currentIndex = index
+  }
+
+  toggleActivePoint() {
+    this.isActivePoint = !this.isActivePoint
   }
 }
 

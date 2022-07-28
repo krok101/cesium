@@ -8,12 +8,13 @@ const Poligon  = observer(() => {
   const positions = []
   entityStore.points.forEach(coords => positions.push(coords[0], coords[1]))
   const poligonCoords = Cartesian3.fromDegreesArray(positions)
+  if (entityStore.isActivePoint) return null
   return (
     <Entity>
       <PolygonGraphics
         hierarchy={poligonCoords}
         material={Color.PURPLE}
-        extrudedHeight={50000}
+        extrudedHeight={10}
         outline={true}
       />
     </Entity>

@@ -22,6 +22,13 @@ const Map = observer(() => {
     entityStore.addPoint([y, x, 400])
   }
 
+  const onMovePoint = (posX, posY) => {
+    let [x, y] = getLocationFromScreenXY(posX, posY, cesium)
+    x = radiansToDegrees(x)
+    y = radiansToDegrees(y)
+    entityStore.points[entityStore.currentIndex] = [y, x, 400]
+  }
+
   const onClickViewer = (e) => {
     if (isNPress) {
       addPoint(e)
@@ -47,7 +54,7 @@ const Map = observer(() => {
 
   return (
     <Viewer ref={cesium} full terrainProvider={terrainProvider} className={styles.container}  onClick={onClickViewer}>
-      <Points/>
+      <Points onMovePoint={onMovePoint}/>
       <Lines/>
       <Poligon/>
     </Viewer>
